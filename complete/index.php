@@ -45,6 +45,7 @@
 
     $mail->send();
     echo '送信は無事完了いたしました。';
+    
 } catch (Exception $e) {
     echo "送信できませんでした。{$mail->ErrorInfo}";
     exit;
