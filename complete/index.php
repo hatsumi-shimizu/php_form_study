@@ -28,15 +28,15 @@
   $mail = new PHPMailer(true);
 
   try {
-    
+     
     $mail->SMTPDebug = SMTP::DEBUG_SERVER;                      
     $mail->isSMTP();                                            
     $mail->Host = 'sandbox.smtp.mailtrap.io';                     
     $mail->SMTPAuth = true;  
     $mail->Port = 2525;                                 
     $mail->Username = 'e2ba3386777cac';                     
-    $mail->Password = '********0219';                               
-           
+    $mail->Password = '********0219';
+    
     $mail->setFrom($email, $name);
     $mail->addAddress($email, $name);
     $mail->isHTML(true);
