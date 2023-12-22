@@ -6,47 +6,50 @@
 
   require 'vendor/autoload.php';
 
-  $name = $_POST['name'];
-  $kana = $_POST['kana'];
-  $email = $_POST['email'];
-  $tel = $_POST['tel'];
-  $postal_code_1 = $_POST['postal_code_1'];
-  $postal_code_2 = $_POST['postal_code_2'];
-  $address = $_POST['address'];
-  $gender = $_POST['gender'];
-  $content = $_POST['content'];
-  $message = $_POST['message'];
+  // $name = $_POST['name'];
+  // $kana = $_POST['kana'];
+  // $email = $_POST['email'];
+  // $tel = $_POST['tel'];
+  // $postal_code_1 = $_POST['postal_code_1'];
+  // $postal_code_2 = $_POST['postal_code_2'];
+  // $address = $_POST['address'];
+  // $gender = $_POST['gender'];
+  // $content = $_POST['content'];
+  // $message = $_POST['message'];
 
-  $mail_body = "<p><b>お名前</b>：".$name."</p>";
-  $mail_body = "<p><b>フリガナ</b>：".$kana."</p>";
-  $mail_body = "<p><b>メールアドレス</b>：".$email."</p>";
-  $mail_body = "<p><b>電話番号</b>：".$tel."</p>";
-  $mail_body = "<p><b>ご住所</b>：".$postal_code_1."-".$postal_code_2. $address."</p>";
-  $mail_body = "<p><b>応募内容</b>：".$content."</p>";
-  $mail_body = "<p><b>その他ご質問などありましたらご記入ください</b>：".$message."</p>";
+  // $mail_body = "<p><b>お名前</b>：".$name."</p>";
+  // $mail_body = "<p><b>フリガナ</b>：".$kana."</p>";
+  // $mail_body = "<p><b>メールアドレス</b>：".$email."</p>";
+  // $mail_body = "<p><b>電話番号</b>：".$tel."</p>";
+  // $mail_body = "<p><b>ご住所</b>：".$postal_code_1."-".$postal_code_2. $address."</p>";
+  // $mail_body = "<p><b>応募内容</b>：".$content."</p>";
+  // $mail_body = "<p><b>その他ご質問などありましたらご記入ください</b>：".$message."</p>";
 
-  $mail = new PHPMailer(true);
+  $mail = new PHPMailer();
 
   try {
-     
-    $mail->SMTPDebug = SMTP::DEBUG_SERVER;                      
-    $mail->isSMTP();                                            
-    $mail->Host = 'sandbox.smtp.mailtrap.io';                     
-    $mail->SMTPAuth = true;  
-    $mail->Port = 2525;                                 
-    $mail->Username = 'e2ba3386777cac';                     
-    $mail->Password = '********0219';
-    
-    $mail->setFrom($email, $name);
-    $mail->addAddress($email, $name);
-    $mail->isHTML(true);
-    $mail->Subject = 'お問合せフォーム入力内容';
-    $mail->Body = $mail_body;
 
+    //基本のセッティング
+    $mail->CharSet = "iso-2022-jp";
+    $mail->Encoding = "7bit";
+    $mail->isSMTP();
+    $mail->Host = "sandbox.smtp.mailtrap.io";
+    $mail->SMTPAuth = true;
+    $mail->Username = $mailObj->"e2ba3386777cac";
+    $mail->Password = $mailObj->"2c95f2c3110219";
+    $mail->Port = 2525;
+
+    // 管理者へのメール
+    $mail->setFrom($mailObj->from);
+    $mail->addAddress($mailObj->to);
+    $mail->Subject = $mailObj->mySubject;
+    $mail->Body = $mailObj->myBodyHeader . $body . $mailObj->myBodyFooter;
     $mail->send();
+
     echo '送信は無事完了いたしました。';
     
 } catch (Exception $e) {
+
     echo "送信できませんでした。{$mail->ErrorInfo}";
     exit;
 }
