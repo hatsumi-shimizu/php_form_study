@@ -51,8 +51,8 @@
 </head>
 <body class="bg-light">
   <p class="text-center">以下の内容でよろしければ「送信」ボタンをクリックしてください。</p>
-  <!-- complete/index.phpへの画面遷移はできている -->
-  <!-- Mailtrapでメール送信するやり方がわからない -->
+
+  <!-- 入力内容確認画面 -->
   <form action="../complete/index.php" method="post">
     <table class="table table-striped-columns shadow-sm p-3 mb-5 bg-body-tertiary rounded">
       <tbody>
