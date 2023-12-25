@@ -3,10 +3,12 @@
   session_start();
 
   $contents = [
-    '選択肢1',
-    '選択肢2',
-    '選択肢3',
+    10 => '選択肢1',
+    20 => '選択肢2',
+    30 => '選択肢3',
   ];
+
+  ini_set('display_errors', 0);
 
 ?>
 
@@ -17,7 +19,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">  
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
   <script src="https://yubinbango.github.io/yubinbango/yubinbango.js" charset="UTF-8"></script>
-  <title>お問合せフォーム</title>
+  <title>お問い合わせフォーム</title>
 </head>
 <body class="bg-light">
   <form action="../confirm/index.php" method="post" class="h-adr">
