@@ -6,6 +6,8 @@ require_once(__DIR__ . '/../lib/functions/utils.php');
 
 session_start();
 
+ini_set('display_errors', 0);
+
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\SMTP;
 use PHPMailer\PHPMailer\Exception;
@@ -43,11 +45,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
       'label' => '応募内容',
       'value' => h($_POST['content']),
     ],
+    
     7 => [
-      'label' => '名前',
-      'value' => h($_POST['name']),
-    ],
-    8 => [
       'label' => '質問内容',
       'value' => h($_POST['message']),
     ],
@@ -92,8 +91,54 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   }
 }
 
+try {
+
+  // DB接続・PDO設定
+  $dsn = 'mysql:dbname=form_study;host=localhost;charset=utf8';
+  $user = 'root';
+  $password = 'root';
+
+  $conn = new PDO($dsn, $user, $password);
+
+  $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+  // var_dump()したときに$postal_code以外NULLになっているが、なぜだかわからない
+  $name = $POST['name'];
+  $kana = $POST['kana'];
+  $email = $POST['email'];
+  $tel = $POST['tel'];
+  $postal_code = $_POST['postal_code_1'] . $_POST['postal_code_2'];
+  $address = $POST['address'];
+  $gender = $POST['gender'];
+  $content = $POST['content'];
+  $question = $POST['message'];
+
+  $stmt = $conn->prepare("INSERT INTO mails (name, kana, email, tel, postal_code, address, gender, content, question) VALUES (:name, :kana, :email, :tel, :postal_code, :address, :gender, :content, :question)");
+
+  $stmt->bindParam(':name', $name);
+  $stmt->bindParam(':kana', $kana);
+  $stmt->bindParam(':email', $email);
+  $stmt->bindParam(':tel', $tel);
+  $stmt->bindParam(':postal_code', $postal_code);
+  $stmt->bindParam(':address', $address);
+  $stmt->bindParam(':gender', $gender);
+  $stmt->bindParam(':content', $content);
+  $stmt->bindParam(':question', $question);
+
+  var_dump($name, $kana, $email, $tel, $postal_code, $address, $gender, $content, $question);
+
+  // この処理でエラーが出る
+  $stmt->execute();
+
+  echo "データが追加されました。";
+} catch (PDOException $e) {
+  echo "エラー: " . $e->getMessage();
+}
+
+$conn = null;
+
 // セッション情報削除
 session_destroy();
 
 // 完了画面に遷移
-header("Location: thanks.html");
+// header("Location: thanks.html");
