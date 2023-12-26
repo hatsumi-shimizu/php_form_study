@@ -141,4 +141,4 @@ $conn = null;
 session_destroy();
 
 // 完了画面に遷移
-// header("Location: thanks.html");
+header("Location: thanks.html");
