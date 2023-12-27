@@ -1,34 +1,23 @@
 <?php
 
-// 作成途中
 session_start();
 
-$error_message = "";
+require_once(__DIR__ . 'db_connect.php');
 
-if(isset($POST['login'])) {
-  $username = $_POST['username'];
-  $password = $_POST['password'];
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+  $errors = [];
 
-  try {
-    $db = new PDO('mysql:host=localhost; dbname=データベース名','root', 'root');
-    $sql = 'select count(*) from users(認証するテーブル名) where username=root and password=root';
-    $stmt = $db->prepare($sql);
-    $stmt->execute(array($username, $password));
-    $result = $stmt->fetch();
-    $stmt = null;
-    $db = null;
+  if (!filter_var($_POST["email"], FILTER_VALIDATE_EMAIL) ) {
+    $errors[] = 'メールアドレスを入力してください。';
+  }
 
-    if ($result[0] != 0){
-      header('Location: http://localhost/login.php');
-      exit;
-    } else {
-      $error_message = "入力情報が間違っています。";
-    }  
-
-  } catch(PDOException $e) {
-    echo $e->getMessage();
-    exit;
+  if(empty($datas["password"])){
+    $errors['password']  = "パスワードを入力してください。";
+  }else if(!preg_match('/\A[a-z\d]{8,100}+\z/i',$datas["password"])){
+    $errors['password'] = "パスワードは8文字で入力してください。";
   }
 }
 
-session_destroy();
+
+
+
