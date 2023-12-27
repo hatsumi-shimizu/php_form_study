@@ -93,7 +93,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 try {
 
-  // DB接続・PDO設定
+  // PDO設定
   $dsn = 'mysql:dbname=form_study;host=localhost;charset=utf8';
   $user = 'root';
   $password = 'root';
@@ -103,17 +103,19 @@ try {
   $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
   // var_dump()したときに$postal_code以外NULLになっているが、なぜだかわからない
-  $name = $POST['name'];
-  $kana = $POST['kana'];
-  $email = $POST['email'];
-  $tel = $POST['tel'];
+  $name = $_POST['name'];
+  $kana = $_POST['kana'];
+  $email = $_POST['email'];
+  $tel = $_POST['tel'];
   $postal_code = $_POST['postal_code_1'] . $_POST['postal_code_2'];
-  $address = $POST['address'];
-  $gender = $POST['gender'];
-  $content = $POST['content'];
-  $question = $POST['message'];
+  $address = $_POST['address'];
+  $gender = $_POST['gender'];
+  $content = $_POST['content'];
+  $question = $_POST['message'];
+  $created_at = date("Y-m-d H:i:s");
+  $updated_at = date("Y-m-d H:i:s");
 
-  $stmt = $conn->prepare("INSERT INTO mails (name, kana, email, tel, postal_code, address, gender, content, question) VALUES (:name, :kana, :email, :tel, :postal_code, :address, :gender, :content, :question)");
+  $stmt = $conn->prepare("INSERT INTO mails (name, kana, email, tel, postal_code, address, gender, content, question, created_at, updated_at) VALUES (:name, :kana, :email, :tel, :postal_code, :address, :gender, :content, :question, :created_at, :updated_at)");
 
   $stmt->bindParam(':name', $name);
   $stmt->bindParam(':kana', $kana);
@@ -124,10 +126,9 @@ try {
   $stmt->bindParam(':gender', $gender);
   $stmt->bindParam(':content', $content);
   $stmt->bindParam(':question', $question);
+  $stmt->bindParam(':created_at', $created_at);
+  $stmt->bindParam('updated_at', $updated_at);
 
-  var_dump($name, $kana, $email, $tel, $postal_code, $address, $gender, $content, $question);
-
-  // この処理でエラーが出る
   $stmt->execute();
 
   echo "データが追加されました。";
@@ -141,4 +142,4 @@ $conn = null;
 session_destroy();
 
 // 完了画面に遷移
-header("Location: thanks.html");
+// header("Location: thanks.html");
