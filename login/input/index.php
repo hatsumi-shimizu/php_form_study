@@ -1,3 +1,11 @@
+<?php
+
+ini_set('display_errors', 0);
+
+?>
+
+<!-- 作成中 -->
+
 <!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -7,14 +15,27 @@
   <title>ログインページ</title>
 </head>
 <body class="text-bg-light p-3">
-  <form action="index.php" method="POST">
+
+  <!-- エラーメッセージ -->
+  <?php if ($_SESSION["errors"]) { 
+      foreach ($_SESSION["errors"] as $error) { ?>
+        <div class="bg-danger text-white w-50 shadow-sm">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-exclamation-circle-fill" viewBox="0 0 16 16">
+            <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8 4a.905.905 0 0 0-.9.995l.35 3.507a.552.552 0 0 0 1.1 0l.35-3.507A.905.905 0 0 0 8 4zm.002 6a1 1 0 1 0 0 2 1 1 0 0 0 0-2z"/>
+          </svg>
+          <?php echo $error; ?>
+        </div>
+    <?php } ?>  
+  <?php } ?>
+
+  <form action="../dashboard/index.php" method="POST">
     <table class="table table-borderless">
       <tbody>
         <div class="form-group">
           <tr class="table-light">
             <th scope="row">メールアドレス</th>
             <td>
-              <input class="form-control" id="sign-in-email" name="username" type="text" placeholder="メールアドレスを入力">
+              <input class="form-control" id="sign-in-email" name="username" type="text">
             </td>
           </tr>
         </div>
@@ -22,7 +43,7 @@
           <tr class="table-light">
             <th scope="row">パスワード</th>
             <td>
-              <input class="form-control" id="sign-in-password" name="password" type="text" placeholder="パスワードを入力（8文字）">
+              <input class="form-control" id="sign-in-password" name="password" type="text">
             </td>
           </tr>
         </div>

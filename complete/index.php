@@ -102,7 +102,6 @@ try {
 
   $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-  // var_dump()したときに$postal_code以外NULLになっているが、なぜだかわからない
   $name = $_POST['name'];
   $kana = $_POST['kana'];
   $email = $_POST['email'];
@@ -142,4 +141,4 @@ $conn = null;
 session_destroy();
 
 // 完了画面に遷移
-// header("Location: thanks.html");
+header("Location: thanks.html");
