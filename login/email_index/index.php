@@ -1,3 +1,9 @@
+<?php
+
+  session_start();
+
+?>
+
 <!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -49,14 +55,14 @@
               <tr>
                 <td>
                   <div class="d-grid gap-2 d-md-block">
-                    <a href="../email_show/index.php?id" class="btn btn-danger text-white" type="button">未読</a>
+                    <a class="btn btn-danger text-white" type="button">未読</a>
                   </div>
                 </td>
             <?php } else { ?>
               <tr>
                 <td>
                   <div class="d-grid gap-2 d-md-block">
-                    <a href="../email_show/index.php?id" class="btn btn-secondary text-white" type="button">既読</a>
+                    <a class="btn btn-secondary text-white" type="button">既読</a>
                   </div>
                 </td>
             <?php } 
@@ -65,7 +71,8 @@
 
                 <td>
                   <div class="d-grid gap-2 d-md-block">
-                    <a href="../email_show/index.php?id" class="btn btn-warning text-white" type="button">詳細ページ</a>
+                    <!-- $record['id']はint型で出力されるため、string型に変換してからhtmlに埋め込む -->
+                    <a href="../email_show/index.php?id=<?php echo (string) $record['id'] ?>" type='button' class='btn btn-warning text-white'>詳細ページ</a>
                   </div>
                 </td>
               <?php "</tr>";  
