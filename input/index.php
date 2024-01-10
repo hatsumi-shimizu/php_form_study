@@ -24,7 +24,7 @@
 <body class="bg-light">
   <form action="../confirm/index.php" method="post" class="h-adr">
   <span class="p-country-name" style="display:none;">Japan</span>
-    <p><span class="text-danger">[必須]</span>の項目は入力必須項目です。必ず入力または選択してください。</p>
+  <p><span class="text-danger">[必須]</span>の項目は入力必須項目です。必ず入力または選択してください。</p>
 
     <!-- エラーメッセージ -->
     <?php if ($_SESSION["errors"]) { 

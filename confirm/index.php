@@ -17,8 +17,8 @@
       $errors[] = '『メールアドレス』は必須項目です。';
     }
 
-    if(empty($_POST["tel"])) {
-      $errors[] = '『電話番号』は必須項目です。';
+    if(empty($_POST["tel"]) || !preg_match('/^0[0-9]{9,10}\z/', $_POST["tel"])) {
+      $errors[] = '『電話番号』は必須項目（ハイフン無し）です。';
     }
 
     if (empty($_POST["postal_code_1"]) || !preg_match("/\A\d{3}\z/", $_POST["postal_code_1"])) {
