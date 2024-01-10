@@ -114,7 +114,8 @@ try {
   $created_at = date("Y-m-d H:i:s");
   $updated_at = date("Y-m-d H:i:s");
 
-  $stmt = $dbh->prepare("INSERT INTO mails (name, kana, email, tel, postal_code, address, gender, content, question, created_at, updated_at) VALUES (:name, :kana, :email, :tel, :postal_code, :address, :gender, :content, :question, :created_at, :updated_at)");
+  $sql = "INSERT INTO mails (name, kana, email, tel, postal_code, address, gender, content, question, created_at, updated_at) VALUES (:name, :kana, :email, :tel, :postal_code, :address, :gender, :content, :question, :created_at, :updated_at)";
+  $stmt = $dbh->prepare($sql);
 
   $stmt->bindParam(':name', $name);
   $stmt->bindParam(':kana', $kana);
