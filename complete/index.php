@@ -98,9 +98,9 @@ try {
   $user = 'root';
   $password = 'root';
 
-  $conn = new PDO($dsn, $user, $password);
+  $dbh = new PDO($dsn, $user, $password);
 
-  $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+  $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
   $name = $_POST['name'];
   $kana = $_POST['kana'];
@@ -114,7 +114,7 @@ try {
   $created_at = date("Y-m-d H:i:s");
   $updated_at = date("Y-m-d H:i:s");
 
-  $stmt = $conn->prepare("INSERT INTO mails (name, kana, email, tel, postal_code, address, gender, content, question, created_at, updated_at) VALUES (:name, :kana, :email, :tel, :postal_code, :address, :gender, :content, :question, :created_at, :updated_at)");
+  $stmt = $dbh->prepare("INSERT INTO mails (name, kana, email, tel, postal_code, address, gender, content, question, created_at, updated_at) VALUES (:name, :kana, :email, :tel, :postal_code, :address, :gender, :content, :question, :created_at, :updated_at)");
 
   $stmt->bindParam(':name', $name);
   $stmt->bindParam(':kana', $kana);
@@ -126,7 +126,7 @@ try {
   $stmt->bindParam(':content', $content);
   $stmt->bindParam(':question', $question);
   $stmt->bindParam(':created_at', $created_at);
-  $stmt->bindParam('updated_at', $updated_at);
+  $stmt->bindParam(':updated_at', $updated_at);
 
   $stmt->execute();
 
@@ -135,7 +135,7 @@ try {
   echo "エラー: " . $e->getMessage();
 }
 
-$conn = null;
+$dbh = null;
 
 // セッション情報削除
 session_destroy();

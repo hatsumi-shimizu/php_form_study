@@ -23,13 +23,13 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
   $password = 'root';
 
   try {
-    $conn = new PDO($dsn, $user, $password);
+    $dbh = new PDO($dsn, $user, $password);
   } catch (PDOException $e) {
     $msg = $e->getMessage();
   }
 
   $sql = "SELECT * FROM users WHERE email = :email";
-  $stmt = $conn->prepare($sql);
+  $stmt = $dbh->prepare($sql);
   $stmt->bindValue(':email', $email);
   $stmt->execute();
   $member = $stmt->fetch();
@@ -62,10 +62,10 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
       <a href="index.php" class="fw-bold" style="text-decoration: none; color: inherit;">ダッシュボード</a>
     </div>
     <div class="p-2">
-      <a href="" style="text-decoration: none; color: inherit">メール送信</a>
+      <a href="../email_index/index.php" style="text-decoration: none; color: inherit">メール受信</a>
     </div>
     <div class="p-2">
-      <a href="../logout/index.php" style="text-decoration: none; color: inherit;">ログアウト</a>
+      <a href="../logout/index.php" id="logout" style="text-decoration: none; color: inherit;">ログアウト</a>
     </div>
   </div>
   <div class="p-5 w-100 bd-highlight">
