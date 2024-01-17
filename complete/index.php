@@ -87,7 +87,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $mail->send();
     
   } catch (Exception $e) {
-    echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
+    $msg = $e->getMessage();
+    echo "エラー：" . $msg;
   }
 }
 
@@ -133,7 +134,8 @@ try {
 
   echo "データが追加されました。";
 } catch (PDOException $e) {
-  echo "エラー: " . $e->getMessage();
+  $msg = $e->getMessage();
+  echo "エラー：" . $msg;
 }
 
 $dbh = null;

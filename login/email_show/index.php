@@ -24,7 +24,6 @@
         $stmt = $dbh->prepare($sql);
         $stmt->bindParam(':id', $id, PDO::PARAM_INT);
         $stmt->execute();
-        // JavaScript との連携など、ボタン表示の処理を追加
     }
 
     if (isset($_GET['id'])) {
@@ -32,13 +31,11 @@
         $isUnread = isUnread($id);
         if ($isUnread) {
             changeToReadButton($id);
-            // ボタン表示の処理を呼び出す
         }
     }
   } catch (PDOException $e) {
-    // エラー処理を適切に行う
-    echo "エラーが発生しました: " . $e->getMessage();
-    // ログファイルに記録するなど
+    $msg = $e->getMessage();
+    echo "エラー：" . $msg;
   }
 ?>
 
@@ -131,6 +128,7 @@
             }
           } catch(PDOException $e) {
             $msg = $e->getMessage();
+            echo "エラー：" . $msg;
           }
         ?>
       </tbody>
