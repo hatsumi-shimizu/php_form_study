@@ -14,7 +14,7 @@
   <script>
     $(function() {
       $("#logout").click(function() {
-        var result = confirm('本当にログアウトしますか？');
+        var result = window.confirm('本当にログアウトしますか？');
         if(result) {
           $.ajax({
             url: '../logout/index.php',
@@ -72,14 +72,15 @@
               <tr>
                 <td>
                   <div class="d-grid gap-2 d-md-block">
-                    <a class="btn btn-danger text-white" type="button">未読</a>
+                    <!-- 作成中 -->
+                    <a id="button" class="btn btn-danger text-white" type="button">未読</a>
                   </div>
                 </td>
             <?php } else { ?>
               <tr>
                 <td>
                   <div class="d-grid gap-2 d-md-block">
-                    <a class="btn btn-secondary text-white" type="button">既読</a>
+                    <a id="button" class="btn btn-secondary text-white" type="button">既読</a>
                   </div>
                 </td>
             <?php } 
@@ -89,7 +90,7 @@
                 <td>
                   <div class="d-grid gap-2 d-md-block">
                     <!-- $record['id']はint型で出力されるため、string型に変換してからhtmlに埋め込む -->
-                    <a href="../email_show/index.php?id=<?php echo (string) $record['id'] ?>" type='button' class='btn btn-warning text-white'>詳細ページ</a>
+                    <a href="../email_show/index.php?id=<?php echo (string) $record['id'] ?>" id="access" type='button' class='btn btn-warning text-white'>詳細ページ</a>
                   </div>
                 </td>
               <?php "</tr>";  
@@ -102,6 +103,5 @@
     </table>
   </div>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
-  <script src="../js/function.js"></script>
 </body>
 </html>
