@@ -5,19 +5,19 @@
   if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $errors = [];
 
-    if(empty($_POST["name"])) {
+    if (empty($_POST["name"])) {
       $errors[] = '『お名前』は必須項目です。';
     }
 
-    if(empty($_POST["kana"]) || !preg_match("/\A[ァ-ヿ]+\z/u", $_POST["kana"])) {
+    if (empty($_POST["kana"]) || !preg_match("/\A[ァ-ヿ]+\z/u", $_POST["kana"])) {
       $errors[] = '『フリガナ』は必須項目です。';
     }
 
-    if (!filter_var($_POST["email"], FILTER_VALIDATE_EMAIL) ) {
+    if (!filter_var($_POST["email"], FILTER_VALIDATE_EMAIL)) {
       $errors[] = '『メールアドレス』は必須項目です。';
     }
 
-    if(empty($_POST["tel"]) || !preg_match('/^0[0-9]{9,10}\z/', $_POST["tel"])) {
+    if (empty($_POST["tel"]) || !preg_match('/^0[0-9]{9,10}\z/', $_POST["tel"])) {
       $errors[] = '『電話番号』は必須項目（ハイフン無し）です。';
     }
 

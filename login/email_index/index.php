@@ -73,7 +73,11 @@
 
           $start = ($page - 1) * $page_size;
 
-          $sql = "SELECT * FROM mails ORDER BY created_at DESC LIMIT $start, $page_size";
+          $sort_order = isset($_GET['order']) ? $_GET['order'] : 'desc';
+
+          $sort_column = isset($_GET['sort']) ? $_GET['sort'] : 'created_at';
+
+          $sql = "SELECT * FROM mails ORDER BY $sort_column $sort_order LIMIT $start, $page_size";
           $stmt = $dbh->prepare($sql);
           $stmt->execute();
 
@@ -97,6 +101,7 @@
           } 
         } catch(PDOException $e) {
           $msg = $e->getMessage();
+          echo "エラー：" . $msg;
         }
       ?>
       </tbody>
@@ -104,9 +109,17 @@
     <div class="text-center">
       <?php
         for ($i = 1; $i <= $total_pages; $i++) {
-          echo "<a class='color: #FF6699;' href='?page=$i'>$i</a>";
+          echo "<a style='color: #6c757d;' href='?page=$i&sort=$sort_column&order=$sort_order'>$i</a>";
           echo "<spec>　</spec>";
-        } 
+        }
+       
+        $next_sort_order = ($sort_order == 'asc') ? 'desc' : 'asc';
+        echo "<a href='?page=$page&sort=created_at&order=$next_sort_order' style='text-decoration: none; color: #6c757d;'>";    
+        echo "<svg xmlns='http://www.w3.org/2000/svg' width='20' height='20' fill='currentColor' class='bi bi-sort-down' viewBox='0 0 16 16'>";
+        echo "<path d='M3.5 2.5a.5.5 0 0 0-1 0v8.793l-1.146-1.147a.5.5 0 0 0-.708.708l2 1.999.007.007a.497.497 0 0 0 .7-.006l2-2a.5.5 0 0 0-.707-.708L3.5 11.293V2.5zm3.5 1a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5zM7.5 6a.5.5 0 0 0 0 1h5a.5.5 0 0 0 0-1h-5zm0 3a.5.5 0 0 0 0 1h3a.5.5 0 0 0 0-1h-3zm0 3a.5.5 0 0 0 0 1h1a.5.5 0 0 0 0-1h-1z'/>";
+        echo "</svg>";
+        echo "並び替え";
+        echo "</a>";
       ?>
     </div>
   </div>

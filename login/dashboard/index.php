@@ -26,6 +26,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
     $dbh = new PDO($dsn, $user, $password);
   } catch (PDOException $e) {
     $msg = $e->getMessage();
+    echo "エラー：" . $msg;
   }
 
   $sql = "SELECT * FROM users WHERE email = :email";
@@ -33,6 +34,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
   $stmt->bindValue(':email', $email);
   $stmt->execute();
   $member = $stmt->fetch();
+
   if ($pw != $member['password']) {
     $errors[] = 'メールアドレスもしくはパスワードが間違っています。';
   } else {
