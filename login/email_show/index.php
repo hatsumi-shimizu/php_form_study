@@ -2,6 +2,44 @@
 
   session_start();
 
+  try {
+    // データベース接続を1回にまとめる
+    $dsn = 'mysql:dbname=form_study;host=localhost;charset=utf8';
+    $user = 'root';
+    $password = 'root';
+    $dbh = new PDO($dsn, $user, $password);
+
+    function isUnread($id) {
+        global $dbh;
+        $sql = "SELECT status FROM mails WHERE id = :id";
+        $stmt = $dbh->prepare($sql);
+        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+        $stmt->execute();
+        return $stmt->fetch()['status'] == 0;
+    }
+
+    function changeToReadButton($id) {
+        global $dbh;
+        $sql = "UPDATE mails SET status = 1 WHERE id = :id";
+        $stmt = $dbh->prepare($sql);
+        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+        $stmt->execute();
+        // JavaScript との連携など、ボタン表示の処理を追加
+    }
+
+    if (isset($_GET['id'])) {
+        $id = $_GET['id'];
+        $isUnread = isUnread($id);
+        if ($isUnread) {
+            changeToReadButton($id);
+            // ボタン表示の処理を呼び出す
+        }
+    }
+  } catch (PDOException $e) {
+    // エラー処理を適切に行う
+    echo "エラーが発生しました: " . $e->getMessage();
+    // ログファイルに記録するなど
+  }
 ?>
 
 <!DOCTYPE html>
@@ -45,14 +83,11 @@
     <table class="table table-bordered">
       <tbody>
         <?php
-          $dsn = 'mysql:dbname=form_study;host=localhost;charset=utf8';
-          $user = 'root';
-          $password = 'root';
-
           try {
+            global $dbh;
             $dbh = new PDO($dsn, $user, $password);
-            // sql文は文字列だからidを文字列に変換
-            $sql = "SELECT * FROM mails WHERE id = " .$_GET["id"];
+            // sql文は文字列なので、$_GET['id']は「.」で連結
+            $sql = "SELECT * FROM mails WHERE id =" .$_GET['id'];
             $stmt = $dbh->prepare($sql);
             $stmt->execute();
 
