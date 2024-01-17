@@ -1,7 +1,6 @@
 <?php
 
   session_start();
-
 ?>
 
 <!DOCTYPE html>
@@ -56,51 +55,60 @@
       <tbody>
 
       <?php
-        $dsn = 'mysql:dbname=form_study;host=localhost;charset=utf8';
-        $user = 'root';
-        $password = 'root';
-
         try {
+          $dsn = 'mysql:dbname=form_study;host=localhost;charset=utf8';
+          $user = 'root';
+          $password = 'root';
           $dbh = new PDO($dsn, $user, $password);
-          $sql = "SELECT * FROM mails ORDER BY created_at DESC";
+
+          $page = isset($_GET['page']) ? $_GET['page'] : 1;
+
+          $page_size = 3;
+
+          $count_sql = "SELECT COUNT(*) FROM mails";
+          $count_stmt = $dbh->query($count_sql);
+          $total = $count_stmt->fetchColumn();
+
+          $total_pages = ceil($total / $page_size);
+
+          $start = ($page - 1) * $page_size;
+
+          $sql = "SELECT * FROM mails ORDER BY created_at DESC LIMIT $start, $page_size";
           $stmt = $dbh->prepare($sql);
           $stmt->execute();
 
           foreach($stmt as $record) {
-
-            if($record['status'] == 0) { ?>
-              <tr>
-                <td>
-                  <div class="d-grid gap-2 d-md-block">
-                    <!-- 作成中 -->
-                    <a id="button" class="btn btn-danger text-white" type="button">未読</a>
-                  </div>
-                </td>
-            <?php } else { ?>
-              <tr>
-                <td>
-                  <div class="d-grid gap-2 d-md-block">
-                    <a id="button" class="btn btn-secondary text-white" type="button">既読</a>
-                  </div>
-                </td>
-            <?php } 
-
-                echo "<td>{$record['created_at']}</td><td>{$record['name']}</td><td>{$record['email']}</td><td>{$record['tel']}</td>" ?>
-
-                <td>
-                  <div class="d-grid gap-2 d-md-block">
-                    <!-- $record['id']はint型で出力されるため、string型に変換してからhtmlに埋め込む -->
-                    <a href="../email_show/index.php?id=<?php echo (string) $record['id'] ?>" id="access" type='button' class='btn btn-warning text-white'>詳細ページ</a>
-                  </div>
-                </td>
-              <?php "</tr>";  
-          }
-        } catch (PDOException $e) {
+            $statusButtonClass = ($record['status'] == 0) ? 'btn-danger' : 'btn-secondary';
+            $statusButtonText = ($record['status'] == 0) ? '未読' : '既読';
+        
+            echo "<tr>";
+            echo "<td>";
+            echo "<div class='d-grid gap-2 d-md-block'>";
+            echo "<a id='button' class='btn text-white {$statusButtonClass}' type='button'>{$statusButtonText}</a>";
+            echo "</div>";
+            echo "</td>";
+            echo "<td>{$record['created_at']}</td><td>{$record['name']}</td><td>{$record['email']}</td><td>{$record['tel']}</td>";
+            echo "<td>";
+            echo "<div class='d-grid gap-2 d-md-block'>";
+            echo "<a href='../email_show/index.php?id={$record['id']}' id='access' type='button' class='btn btn-warning text-white'>詳細ページ</a>";
+            echo "</div>";
+            echo "</td>";
+            echo "</tr>";
+          } 
+        } catch(PDOException $e) {
           $msg = $e->getMessage();
         }
       ?>
       </tbody>
     </table>
+    <div class="text-center">
+      <?php
+        for ($i = 1; $i <= $total_pages; $i++) {
+          echo "<a class='color: #FF6699;' href='?page=$i'>$i</a>";
+          echo "<spec>　</spec>";
+        } 
+      ?>
+    </div>
   </div>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
 </body>
