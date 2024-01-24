@@ -42,9 +42,9 @@
   <div class="p-5 w-100 bd-highlight">
     <h3>メール受信一覧</h3>
     <div>
-      <form action="search.php" method="POST">
+      <form action="search.php" method="GET">
         <label for="search">フリーワード検索：</label>
-        <input type="text" name="search" value="<?php echo isset($_POST['search']) ? htmlspecialchars($_POST['search']) : ''; ?>" placeholder="キーワードを入力">
+        <input type="text" name="search" value="<?php echo isset($_GET['search']) ? htmlspecialchars($_GET['search']) : ''; ?>" placeholder="キーワードを入力">
         <input type="submit" value="検索">
       </form>
     </div>
