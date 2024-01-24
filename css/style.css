@@ -1,0 +1,14 @@
+.heading {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.table {
+  margin-bottom: 30px;
+}
+
+.search {
+  padding-top: 10px;
+  padding-right: 10px;
+}/*# sourceMappingURL=style.css.map */
