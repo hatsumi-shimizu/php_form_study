@@ -71,8 +71,16 @@ session_start();
           $page = isset($_GET['page']) ? $_GET['page'] : 1;
           $page_size = 3;
 
+          // 検索結果表示
           $search_term = isset($_GET['search']) ? $_GET['search'] : '';
-          $search_condition = empty($search_term) ? '' : " WHERE (name LIKE '%$search_term%' OR email LIKE '%$search_term%' OR tel LIKE '%$search_term%')";
+          $search_condition = '';
+
+          // フリーワードの入力が「未読」の場合、未読メールのみ表示される
+          if (!empty($search_term) && $search_term === '未読') {
+            $search_condition = "WHERE status = 0";
+          } elseif (!empty($search_term)) {
+            $search_condition = "WHERE (name LIKE '%$search_term%' OR email LIKE '%$search_term%' OR tel LIKE '%$search_term%')";
+          }
 
           $count_sql = "SELECT COUNT(*) FROM mails $search_condition";
           $count_stmt = $dbh->query($count_sql);
