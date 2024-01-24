@@ -8,6 +8,7 @@ session_start();
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+  <link rel="stylesheet" href="../../css/style.css">
   <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
   <script>
     $(function () {
@@ -39,13 +40,20 @@ session_start();
     </div>
   </div>
   <div class="p-5 w-100 bd-highlight">
-    <h3>検索結果</h3>
-    <div>
-      <form action="search.php" method="GET">
-        <label for="search">フリーワード検索：</label>
-        <input type="text" name="search" value="<?php echo isset($_GET['search']) ? htmlspecialchars($_GET['search']) : ''; ?>" placeholder="キーワードを入力">
-        <input type="submit" value="検索">
-      </form>
+    <div class="heading">
+      <h3>検索結果</h3>
+      <div class="search">
+        <form action="search.php" method="GET">
+          <div class="row g-1 align-items-center">
+            <div class="col-auto">
+              <input type="text" name="search" class="form-control" value="<?php echo isset($_GET['search']) ? htmlspecialchars($_GET['search']) : ''; ?>" placeholder="キーワードで絞り込み">
+            </div>
+            <div class="col-auto">
+              <input type="submit" class="btn btn-outline-secondary" value="検索">
+            </div>
+          </div>
+        </form>
+      </div>
     </div>
     <table class="table table-bordered text-center">
       <thead>
